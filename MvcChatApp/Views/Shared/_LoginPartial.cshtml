@@ -1,0 +1,41 @@
+﻿<ul class="navbar-nav">
+    @if (User.Identity.IsAuthenticated)
+    {
+            <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Index">Sohbetler</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Groups">Grup Oluştur</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="GetGroups">Gruplar</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="AddFriend">Arkadaş Ekle</a>
+            </li>
+            
+            <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Friend">Arkadaşlar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="UserPage">
+                    @User.Identity.Name
+                </a>
+            </li>
+                
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Oturumu Kapat</a>
+            </li>
+
+    }
+    else
+    {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Oturum Aç</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Kayıt Ol</a>
+            </li>
+
+    }
+</ul>

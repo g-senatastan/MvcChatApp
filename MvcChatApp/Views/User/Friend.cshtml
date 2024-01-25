@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Friend";
+}
+
+@model List<AppUser>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Friends List</title>
+    <!-- Bootstrap CSS Link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1>Arkadaş Listesi</h1>
+
+        @if (Model.Any())
+        {
+                <div class="row">
+        <div class="col-md-12">
+        <div id="progress">
+            <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+            
+                <thead>
+                    <tr>
+                        
+                        <th scope="col">Ad Soyad</th>
+                        <th scope="col">Kullanıcı Adı</th>
+                        <th scope="col">E-Posta</th>
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var friend in Model)
+                    {
+                            <tr>
+                                
+                                <td>@friend.FullName</td>
+                                <td>@friend.UserName</td>
+                                <td>@friend.Email</td>
+                                
+                            </tr>
+
+                            
+                    }
+                    
+                </tbody>
+            </table>
+                </div>
+            </div>
+            </div>
+            </div>
+        }
+        
+        else
+        {
+            <p class="mt-3">You don't have any friends yet.</p>
+        }
+</div>
+
+<!-- Bootstrap JS and Popper.js CDN Links (Include these at the end of the body tag) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+
+

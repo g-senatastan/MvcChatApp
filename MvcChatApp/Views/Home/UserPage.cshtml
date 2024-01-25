@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "UserPage";
+}
+
+@model AppUser
+
+<h2>Profilim</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <img src="/Photos/pp.png" style="width:300px" />
+    </div>
+    <div class="col-md-8">
+
+        <table class="table">
+            <tr>
+                <td><b>Adı Soyadı</b></td>
+                <td>@Model.FullName</td>
+            </tr>
+            <tr>
+                <td><b>Kullanıcı Adı</b></td>
+                <td>@Model.UserName </td>
+            </tr>
+            <tr>
+                <td><b>E-Posta</b></td>
+                <td>@Model.Email</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+@model List<AppUser>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Friend</title>
+    <!-- Bootstrap CSS Link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .friends-list {
+            height: 400px;
+            overflow-y: scroll;
+        }
+        .chat-window {
+            height: 400px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Friends List -->
+        <div class="col-md-3">
+            <div class="card friends-list">
+                <div class="card-header">Arkadaşlar</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                            @if (Model.Any()){
+                                @foreach (var friend in Model)
+                                {
+                                    <li class="list-group-item" data-user="@friend.UserName">@friend.UserName</li>
+                                }
+                            }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Window -->
+        <div class="col-md-9">
+            <div class="card mt-3">
+                <div class="card-header" id="selectedFriend">Arkadaşınla sohbet et</div>
+
+                <div class="card-body chat-window" id="chat-window">
+                    <!-- Chat messages will be displayed here -->
+                </div>
+                <div class="card-footer">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Mesaj yazınız..." aria-label="Type your message..." aria-describedby="button-addon2" id="messageInput">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="button-addon2">Gönder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js CDN Links (Include these at the end of the body tag) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- SignalR Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.11/signalr.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        connection.on("ReceiveMessage", function (user, message) {
+            const chatWindow = $("#chat-window");
+            chatWindow.append(`<div class="message received"><p>${user}: ${message}</p></div>`);
+            chatWindow.scrollTop(chatWindow[0].scrollHeight);
+        });
+
+        connection.start().catch(err => console.error(err));
+
+        $(".friends-list li").click(function () {
+            const selectedFriend = $(this).data("user");
+            $("#selectedFriend").text(`${selectedFriend}`);
+            $("#chat-window").html(""); // Reset chat window when a new friend is selected
+
+            // Get previous messages with the selected friend (optional)
+            // You may want to fetch previous messages and display them when a friend is selected.
+            // You can make an AJAX call to the server to get previous messages and append them to the chat window.
+        });
+
+        $("#button-addon2").click(function () {
+            const user = $("#selectedFriend").text().replace("Chat with ", "");
+            const message = $("#messageInput").val();
+
+            // Check if the message is not empty before sending
+            if (message.trim() !== "") {
+                connection.invoke("SendMessage", user, message).catch(err => console.error(err));
+                $("#messageInput").val("");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+
+
